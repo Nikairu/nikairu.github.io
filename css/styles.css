@@ -43,6 +43,7 @@ header{
 
 .page-header{
     display: flex;
+    align-items: center;
     width: 100%;
     padding: 20px;
 }
@@ -279,6 +280,7 @@ section{
 .form-div {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .form-div form{
@@ -289,6 +291,14 @@ section{
     align-items: center;
 }
 
+.form-div form .input-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+
 .form-div label{
     width: fit-content;
 
@@ -298,6 +308,9 @@ section{
     width: 140px;
 }
 
-.form-div a{
-    margin: 0 auto;
+.link-list .link {
+    margin-right: 3px;
+}
+.link-list .link:last-child{
+    margin-right: unset;
 }
