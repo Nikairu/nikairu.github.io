@@ -277,6 +277,7 @@ section {
 
 .work-div ul {
   list-style-type: none;
+  padding-left: unset;
 }
 
 .work-div table {
