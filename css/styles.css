@@ -275,3 +275,29 @@ section{
 .cloud-back {
     animation: 34s cloud-move-reverse infinite alternate linear;
 }
+
+.form-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-div form{
+    width: max-content;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-div label{
+    width: fit-content;
+
+}   
+
+.form-div input{
+    width: 140px;
+}
+
+.form-div a{
+    margin: 0 auto;
+}
