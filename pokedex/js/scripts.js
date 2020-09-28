@@ -8,9 +8,7 @@ let pokemonRepository = (function () {
     function loadList() {
 		showLoadingMessage();
 
-        return fetch(apiUrl).then(function (promiseResponse){
-            return promiseResponse.json();
-        }).then(function (json){
+        return $.ajax(apiUrl, { dataType: 'json' }).then(function (json){
             json.results.forEach(function (item) {
 
                 let pokemon = {
@@ -33,9 +31,7 @@ let pokemonRepository = (function () {
     function loadDetails(pokemon) {
 		showLoadingMessage();
 		
-		return fetch(pokemon.detailsUrl).then(function (response){
-            return response.json();
-        }).then(function (json){
+		return $.ajax(pokemon.detailsUrl, { dataType: 'json' }).then(function (json){
             pokemon.imageUrl = json.sprites.front_default;
             pokemon.height = json.height;
         }).catch(function (){
@@ -45,22 +41,14 @@ let pokemonRepository = (function () {
 	}
 	
 	function showLoadingMessage(){
-		let pokemonImage = document.querySelector('.pokemon-sprite');
-		//pokemonImage.style.display = "none";//hides previous pokemon sprite
-        //pokemonImage.src = ``;
-		
-		let infoContainerObj =  document.querySelector('.pokemon-info-container');
-		infoContainerObj.style.overflow = `hidden`;//sets overflow to hidden so scrollbar won't be shown during animation
-
-		let loadingObject = document.querySelector('.loading-message');
-		loadingObject.style.display = "block";//displays loading animation
+		$('.pokemon-info-container').css('overflow','hidden');
+		$('.loading-message').css('display','block');
 	}
 
 	function hideLoadingMessage(){
-		let loadingObject = document.querySelector('.loading-message');
-		loadingObject.style.display = "none";//Hides loading animation
-		let infoContainerObj =  document.querySelector('.pokemon-info-container');
-		infoContainerObj.style.overflow = `auto`;//sets overflow to auto so scrollbar will be shown if needed
+		$('.loading-message').css('display','none');
+
+		$('.pokemon-info-container').css('overflow','auto');
 	}
 
     function getAll() {
@@ -90,24 +78,18 @@ let pokemonRepository = (function () {
 
 
     function addListItem(pokemon) {
-
-        let pokemonBlock = document.querySelector('.pokemon-list');
-        let listItem = document.createElement('li');
-        let button = document.createElement('button');
-        button.innerText = pokemon.name;
-        button.classList.add('pokemon-button');
+		
+		let newElement = $(`<li><button class="pokemon-button">${pokemon.name}</button></li>`);
+		$('.pokemon-list').append(newElement);
     
-        listItem.appendChild(button);
-        pokemonBlock.appendChild(listItem);
-
-        addEventListener(button, pokemon);
+        addEventListener(newElement, pokemon);
 
     }
 
     function addEventListener(button, pokemon) {
-        button.addEventListener('click', function (event) {
+        button.click( function (event) {
 
-            console.log(`Clicked on ${button.innerText}`);
+            console.log(`Clicked on ${button.text()}`);
             showDetails(pokemon);
           });
 
@@ -119,73 +101,50 @@ let pokemonRepository = (function () {
 
 			showModal(pokemon);
 
-			//let pokemonImage = document.querySelector('.pokemon-sprite');
-            //pokemonImage.src = `${pokemon.imageUrl}`;//displays new pokemon sprite
-			//pokemonImage.style.display = "block";
 			console.log(`<Mandatory Console Log> Pokemon Height: ${pokemon.height}`)
 		})
     }
 
-	let modalContainer = document.querySelector('.modal-container');
+	let modalContainer = $('.modal-container');
  	function showModal(pokemon) {
-		modalContainer.innerHTML = '';
-		let modal = document.createElement('div');
-		modal.classList.add('modal');
 
-		let closeButtonElement = document.createElement('button');
-		closeButtonElement.classList.add('modal-close');
-		closeButtonElement.innerText = 'Close';
-		closeButtonElement.addEventListener('click', hideModal);
+		$('.modal-container').html(`
+		<div class='modal'>
+			<button class='modal-close'>Close</button> 
+			<h1 class='modal-title'>${pokemon.name}</h1>
+			<p class='modal-content'>Height: ${pokemon.height}</p>
+			<div class='modal-image-container'>
+				<img class='modal-image' src='${pokemon.imageUrl}'></img>
+			</div>
+		</div>`);
 
-		let titleElement = document.createElement('h1');
-		titleElement.classList.add(`modal-title`);
-		titleElement.innerText = pokemon.name;
+		$('.modal-close').click(hideModal);
 
-		let contentElement = document.createElement('p');
-		contentElement.classList.add(`modal-content`);
-		contentElement.innerText = `Height: ${pokemon.height}`;
+		$('.modal-container').addClass('is-visible');
 
-		let imageContainer = document.createElement('div');
-		imageContainer.classList.add(`modal-image-container`);
-
-		let imageElement = document.createElement('img');
-		imageElement.classList.add(`modal-image`);
-		imageElement.src = `${pokemon.imageUrl}`;
-
-		modal.appendChild(closeButtonElement);
-		modal.appendChild(titleElement);
-		modal.appendChild(contentElement);
-		imageContainer.appendChild(imageElement);
-		modal.appendChild(imageContainer);
-		modalContainer.appendChild(modal);
-
-
-		modalContainer.classList.add('is-visible');
  	}
 
   	let dialogPromiseReject; // This can be set later, by showDialog
 
   	function hideModal() {
-    	let modalContainer = document.querySelector('.modal-container');
-    	modalContainer.classList.remove('is-visible');
+		$('.modal-container').removeClass('is-visible');
 
     	if (dialogPromiseReject) {
      	 	dialogPromiseReject();
-      	dialogPromiseReject = null;
+      		dialogPromiseReject = null;
     	}
 	 }
 	 
 	window.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+		if (e.key === 'Escape' && $('.modal-container').hasClass('is-visible')) {
 		  hideModal();  
 		}
-	  });
+	});
 
-	modalContainer.addEventListener('click', (e) => {
+	$('.modal-container').click((e) => {
 		// Since this is also triggered when clicking INSIDE the modal
 		// We only want to close if the user clicks directly on the overlay
-		let target = e.target;
-		if (target === modalContainer) {
+		if (e.target === $('.modal-container')[ 0 ]) {
 		  hideModal();
 		}
 	});

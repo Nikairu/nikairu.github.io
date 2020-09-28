@@ -14,11 +14,16 @@ html, body {
     overflow: hidden;
 }
 
+
 .pokemon-info-container{
+	background-image: url("https://www.wallpapertip.com/wmimgs/81-812765_simple-pokemon-background.png");
+	background-position: top right;
+	background-repeat: no-repeat;
 	height: 100%;
     width: 100%;
     position: relative;
-    overflow: auto;
+	overflow: auto;
+	background-size: cover;
 }
 
 .pokemon-sprite{
@@ -114,7 +119,7 @@ ul {
 	top: 0;
 	left: 0;
 	width: 100%;
-	 height: 100%; 
+	height: 100%; 
 	background: rgba(0, 0, 0, 0.5);
 	
 	/* to show it above other content */
@@ -173,7 +178,5 @@ ul {
 .modal-image{
 	width: 100%;
 }
-
-
 
 
