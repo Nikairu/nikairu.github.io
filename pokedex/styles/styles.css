@@ -165,5 +165,6 @@ button:focus {
 }
 
 .pokemon-sprite{
-	width: 60%;
+	min-width: 60%;
+	height: 250px;
 }
