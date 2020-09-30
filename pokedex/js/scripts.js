@@ -1,6 +1,32 @@
 
 let pokemonRepository = (function () {
 
+	function pokeColour(type){
+		let colours = {
+			normal: `#A8A878`,
+			fire:`#F08030`,
+			water:`#6890F0`,
+			electric:`#F8D030`,
+			grass:`#78C850`,
+			ice:`#98D8D8`,
+			ground:`#E0C068`,
+			flying:`#A890F0`,
+			ghost:`#705898`,
+			rock:`#B8A038`,
+			fighting:`#C03028`,
+			poison:`#A040A0`,
+			psychic:`#F85888`,
+			bug:`#A8B820`,
+			dark:`#705848`,
+			steel:`#B8B8D0`,
+			dragon:`#7038F8`
+		};
+
+		return colours[type];
+	}
+	
+
+
     let pokemonList = [];
 
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=100000000000000';
@@ -33,7 +59,10 @@ let pokemonRepository = (function () {
 		
 		return $.ajax(pokemon.detailsUrl, { dataType: 'json' }).then(function (json){
             pokemon.imageUrl = json.sprites.front_default;
-            pokemon.height = json.height;
+			pokemon.height = json.height;
+			pokemon.weight = json.weight;
+			pokemon.types = json.types;
+			pokemon.abilities = json.abilities
         }).catch(function (){
 		   //Error 
 		   hideLoadingMessage();
@@ -79,8 +108,8 @@ let pokemonRepository = (function () {
 
     function addListItem(pokemon) {
 		
-		let newElement = $(`<li><button class="pokemon-button">${pokemon.name}</button></li>`);
-		$('.pokemon-list').append(newElement);
+		let newElement = $(`<button class="pokemon-button" data-toggle="modal" data-target="#exampleModal">${pokemon.name}</button>`);
+		$('#pokemon-list').append(newElement);
     
         addEventListener(newElement, pokemon);
 
@@ -105,10 +134,9 @@ let pokemonRepository = (function () {
 		})
     }
 
-	let modalContainer = $('.modal-container');
  	function showModal(pokemon) {
 
-		$('.modal-container').html(`
+/* 		$('.modal-container').html(`
 		<div class='modal'>
 			<button class='modal-close'>Close</button> 
 			<h1 class='modal-title'>${pokemon.name}</h1>
@@ -116,11 +144,58 @@ let pokemonRepository = (function () {
 			<div class='modal-image-container'>
 				<img class='modal-image' src='${pokemon.imageUrl}'></img>
 			</div>
-		</div>`);
+		</div>`
+		
+ 		`
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+			  ...
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+		
+		
+		` 
+		); */
+
+		$('.modal-title').html(`<h1 style='color:${pokeColour(pokemon.types[0].type.name)};'>${pokemon.name}</h1>`);
+		console.log(pokemon.types);
+		console.log(pokemon.types[0].type.name);
+		console.log(pokemon.types[0].name);
+		$('.modal-body').html(``);
+		$('.modal-body').append(`<img src='${pokemon.imageUrl}' class='pokemon-sprite' ></img>`);
+		$('.modal-body').append(`<p>Height: ${pokemon.height}</p>`);
+		$('.modal-body').append(`<p>Weight: ${pokemon.weight}</p>`);
+
+		let s = '';
+
+		pokemon.types.forEach(type => {
+			s += type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1) + `, `;
+		});
+		$('.modal-body').append(`<p>Types: ${s.slice(0, -2)}</p>`);
+
+		pokemon.abilities.forEach(ability => {
+			s += ability.ability.name.charAt(0).toUpperCase() + ability.ability.name.slice(1) + `, `;
+		});
+		$('.modal-body').append(`<p>Abilities: ${s.slice(0, -2)}</p>`);
+
 
 		$('.modal-close').click(hideModal);
 
-		$('.modal-container').addClass('is-visible');
+		/* $('.modal-container').addClass('is-visible'); */
 
  	}
 
