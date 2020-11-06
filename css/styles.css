@@ -26,7 +26,7 @@ Secondary Color (Orange): #e0b354;
 }
 
 body {
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-weight: 400;
   font-size: 16px;
 
@@ -329,4 +329,18 @@ section {
 
 .link-list .link:last-child {
   margin-right: unset;
+}
+
+.svg-adjustable-container {
+  border: 10px solid #b6bdc3;
+  width: 100%;
+  background: #fff;
+  margin: 0 auto;
+  border: none;
+}
+
+/* Required to make image fluid in IE */
+
+object {
+  width: 100%;
 }
