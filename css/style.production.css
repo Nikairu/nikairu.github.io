@@ -260,6 +260,10 @@ button:focus,
   }
 }
 
+.link-list a{
+  padding-right: 8px;
+}
+
 @media all and (max-width: 750px) {
   .grid {
     grid-gap: 10px;
