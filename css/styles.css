@@ -93,10 +93,6 @@ header {
   width: auto;
 }
 
-.grid__item:last-child {
-  grid-column: 3 / 3;
-  grid-row: 1 / 3;
-}
 
 footer {
   font-size: small;
