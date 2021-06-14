@@ -148,31 +148,6 @@ const ErrorMessage = styled.p`
   font-weight: 500;
 `;
 
-// const Button = styled.button`
-// width: 280px;
-// height: 60px;
-// background-color: #569358;
-// display: flex;
-// justify-content: center;
-// align-items: center;
-// cursor: pointer;
-// margin: 0 auto;
-// margin-top: 70px;
-// box-shadow: 0px 50px 60px 0px rgba(1, 9, 25, 0.4);
-// border: none;
-
-// @media (min-width: 1360px){
-//     width: 325px;
-// }
-// `;
-
-// const ButtonText = styled.p`
-// font-weight: 700;
-// font-size: 24px;
-// color: white;
-// text-transform: uppercase;
-// transform: translate(0%, 2px);
-// `;
 
 const StyledButton = styled(Button)`
   max-width: 360px;
@@ -257,7 +232,7 @@ class ContactForm extends Component {
       formData.append("email", this.emailInputRef.current.value);
       formData.append("question", this.questionInputRef.current.value);
 
-      axios.post("https://nikairu.github.io/send.php", formData, {
+      axios.post("https://portfolio.diogosilvaoliveira.com/send.php", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
